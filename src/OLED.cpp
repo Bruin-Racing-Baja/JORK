@@ -71,6 +71,7 @@ void OLED::init(){
 }
 
 void OLED::graph_eg_rpm(){
+   oled1.setFont(u8g2_font_crox1h_tf);
   oled1.clearBuffer();
   oled1.drawFrame(2,0,GRAPH_NUMPIXELS_X  ,GRAPH_NUMPIXELS_Y - 3);
   oled1.drawStr(GRAPH_NUMPIXELS_X+5, 12, "EG:");
@@ -82,7 +83,7 @@ void OLED::graph_eg_rpm(){
   oled1.print(state->wl_rpm,1);
 
   for(int i = 0; i < GRAPH_NUMPIXELS_X; i++){
-    oled1.drawPixel(i+2, GRAPH_NUMPIXELS_Y-(graph_frame.getValAtIndex(GRAPH_NUMPIXELS_X-i) / 25)-4); //replace dataset[] with circular buffer
+    oled1.drawPixel(i+2, GRAPH_NUMPIXELS_Y-(graph_frame.getValAtIndex(GRAPH_NUMPIXELS_X-i) / ybin_size)-4); //replace dataset[] with circular buffer
   }
   oled1.sendBuffer();
 }
@@ -90,7 +91,8 @@ void OLED::graph_eg_rpm(){
 void OLED::draw_menu(){
     //  oled1.drawStr(GRAPH_NUMPIXELS_X+5, 30, "WL:");
     //TODO: 4X prints, 1x draw frame around current selection
-    
+      oled2.setFont(u8g2_font_crox1h_tf);
+
   oled2.clearBuffer();
   oled2.setCursor(4,11);
   oled2.print("P: ");
@@ -142,16 +144,18 @@ int OLED::get_selection(){
 }
 void OLED::idle(){
     oled1.clearBuffer();
-    oled2.clearBuffer();
-    oled1.setFont(u8g2_font_inb16_mr);
-    oled2.setFont(u8g2_font_inb16_mr);
+    oled1.setFont(u8g2_font_luRS14_te );
 
     oled1.setCursor(2,24);
     oled1.print("GOOD LUCK");
+        oled1.sendBuffer();
+
+    oled2.clearBuffer();
+    oled2.setFont(u8g2_font_luRS14_te );
+
 
     oled2.setCursor(2,24);
-    oled2.print("DONT CRASH");
+    oled2.print("DON'T CRASH");
 
-    oled1.sendBuffer();
     oled2.sendBuffer();
 }

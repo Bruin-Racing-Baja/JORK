@@ -38,40 +38,57 @@ double button5_debounce_time_falling = 0;
 
 // Creating ISR functions
 void right_button_isr(){
-  if(millis()-button1_debounce_time > DEBOUNCE_TIME){
 
+  if(millis()-button2_debounce_time > DEBOUNCE_TIME){
+    //Serial.println("right");
     switch(oled.get_selection()){
       case P_GAIN_SELECT:
         can.set_p_gain(state.p + can.increments.p);
+        break;
       case D_GAIN_SELECT:
         can.set_d_gain(state.d + can.increments.d);
+        break;
       case LOW_TARGET:
         can.set_low_target(state.low_target + can.increments.low_target);
+        break;
       case HIGH_TARGET:
         can.set_high_target(state.high_target + can.increments.high_target);
-        button1_debounce_time = millis();
+        //Serial.println(state.high_target + can.increments.high_target);
+        break;
+
     }
+    button2_debounce_time = millis();
+
   }
 }
 
 void left_button_isr(){
-  if(millis()-button2_debounce_time > DEBOUNCE_TIME){
+
+  if(millis()-button1_debounce_time > DEBOUNCE_TIME){
+        Serial.println("left");
+
   switch(oled.get_selection()){
     case P_GAIN_SELECT:
       can.set_p_gain(state.p - can.increments.p);
+      break;
     case D_GAIN_SELECT:
       can.set_d_gain(state.d - can.increments.d);
+      break;
     case LOW_TARGET:
       can.set_low_target(state.low_target - can.increments.low_target);
+      break;
     case HIGH_TARGET:
       can.set_high_target(state.high_target - can.increments.high_target);
+      break;
   }
-  button2_debounce_time = millis();
+  button1_debounce_time = millis();
   }
 }
 
 void bottom_button_isr(){
   if(millis()- button3_debounce_time > DEBOUNCE_TIME){
+      Serial.println("bottom");
+
     oled.bottom_button_isr();
     button3_debounce_time = millis();
   }
